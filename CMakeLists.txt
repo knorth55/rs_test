@@ -28,6 +28,9 @@ catkin_package(
 #find_package(catkin REQUIRED COMPONENTS xxx)
 #Add required system packages here
 #find_package(xxx)
+
+catkin_python_setup()
+
 rs_add_library(rs_exampleGSOCAnnotator src/ExampleGSOCAnnotator.cpp)
 target_link_libraries(rs_exampleGSOCAnnotator ${CATKIN_LIBRARIES})
 rs_add_library(rs_pythonTestAnnotator src/PythonTestAnnotator.cpp)
