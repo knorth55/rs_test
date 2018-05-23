@@ -1,4 +1,9 @@
-## installation
+## Requirement
+
+- boost::python
+- boost::numpy
+
+## Installation
 
 - Install robosherlock
 
@@ -23,8 +28,17 @@ catkin build
 
 Download `test.bag` from [here](https://robosherlock.org/tutorials/pipeline.html)
 
-```
+```bash
 roscore
+roslaunch robosherlock rs.launch ae:=my_demo
 rosbag play test.bag --loop --clock
-roslaunch robosherlock rs.launch ae:=my_demo 
 ```
+
+- Run boost::python and boost::numpy example
+
+```bash
+roscore
+roslaunch robosherlock rs.launch ae:=python_test
+rosbag play test.bag --loop --clock
+```
+
