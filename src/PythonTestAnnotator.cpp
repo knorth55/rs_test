@@ -63,7 +63,17 @@ public:
     python::tuple shape = python::make_tuple(cloud_ptr->points.size());
     np::ndarray arr = np::zeros(shape, np::dtype::get_builtin<float>());
     np::ndarray res_arr = python::extract<np::ndarray>(rs_test_random_add_arr_func(arr));
-    outInfo("Random added array dimension: " << res_arr.get_nd());
+    auto res_arr_shape = res_arr.get_shape();
+    outInfo("Numpy array dimension: " << res_arr.get_nd());
+    outInfo("Numpy array shape: " << res_arr_shape[0]);
+    outInfo("Random add array: " << python::extract<char const *>(python::str(res_arr)));
+
+    // get pointer of numpy array
+    double *p = reinterpret_cast<double *>(res_arr.get_data());
+    for (size_t i = 0; i < 10; i++)
+    {
+      outInfo("Numpy array " << i << "th element: " << *(p + i));
+    }
 
     outInfo("took: " << clock.getTime() << " ms.");
     return UIMA_ERR_NONE;
