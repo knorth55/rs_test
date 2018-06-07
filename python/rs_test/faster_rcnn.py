@@ -15,6 +15,7 @@ class FasterRCNNVGG16Predictor(object):
             self.model.to_gpu()
 
     def predict(self, img):
+        img = img[:, :, ::-1].transpose((2, 0, 1))
         imgs = img[None]
         if self.gpu >= 0:
             imgs = cuda.to_gpu(imgs)

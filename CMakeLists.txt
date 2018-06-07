@@ -3,6 +3,7 @@ project(rs_test)
 find_package(catkin REQUIRED robosherlock)
 find_package(Boost REQUIRED COMPONENTS python)
 find_package(PythonLibs REQUIRED)
+find_package(OpenCV REQUIRED)
 include_directories(${PYTHON_INCLUDE_DIRS})
 ################################################################################
 ## Constants for project                                                      ##
@@ -39,7 +40,7 @@ target_link_libraries(rs_exampleGSOCAnnotator ${CATKIN_LIBRARIES})
 rs_add_library(rs_pythonTestAnnotator src/PythonTestAnnotator.cpp)
 target_link_libraries(rs_pythonTestAnnotator ${CATKIN_LIBRARIES} boost_numpy)
 rs_add_library(rs_fasterRCNNAnnotator src/FasterRCNNAnnotator.cpp)
-target_link_libraries(rs_fasterRCNNAnnotator ${CATKIN_LIBRARIES} boost_numpy)
+target_link_libraries(rs_fasterRCNNAnnotator ${CATKIN_LIBRARIES} ${OpenCV_LIBRARIES} boost_numpy)
 ################################################################################
 ## Build                                                                      ##
 ################################################################################

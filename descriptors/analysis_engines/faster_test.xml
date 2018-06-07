@@ -172,7 +172,7 @@
       <fixedFlow>
        <node>CollectionReader</node>
        <node>ImagePreprocessor</node>
-       <node>PythonTestAnnotator</node>
+       <node>FasterRCNNAnnotator</node>
        <node>PointCloudFilter</node>
        <node>NormalEstimator</node>
        <node>PlaneAnnotator</node>

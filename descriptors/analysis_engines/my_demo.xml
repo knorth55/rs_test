@@ -46,6 +46,9 @@
     <delegateAnalysisEngine key="ExampleGSOCAnnotator">
       <import location="../annotators/ExampleGSOCAnnotator.xml"/>
     </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="FasterRCNNAnnotator">
+      <import location="../annotators/FasterRCNNAnnotator.xml"/>
+    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="FeatureAnnotator">
       <import location="../../../robosherlock/descriptors/annotators/annotation/FeatureAnnotator.xml"/>
     </delegateAnalysisEngine>
