@@ -73,8 +73,10 @@ public:
       *(img_ptr + i) = color.data[i];
     }
 
+    outInfo("FasterRCNN prediction start");
     python::tuple return_tuple = python::extract<python::tuple>(
       predictor.attr("predict")(img));
+    outInfo("FasterRCNN prediction finish");
     np::ndarray bbox = python::extract<np::ndarray>(return_tuple[0]);
     np::ndarray label = python::extract<np::ndarray>(return_tuple[1]);
     np::ndarray score = python::extract<np::ndarray>(return_tuple[2]);
@@ -86,10 +88,10 @@ public:
     float *score_ptr = reinterpret_cast<float *>(score.get_data());
 
     for (size_t i=0; i < n_rois; i++) {
-      int y_min = (int)std::round(std::min((float)0, *(bbox_ptr + 4 * i)));
-      int x_min = (int)std::round(std::min((float)0, *(bbox_ptr + 4 * i + 1)));
-      int y_max = (int)std::round(std::max((float)color_height, *(bbox_ptr + 4 * i + 2)));
-      int x_max = (int)std::round(std::max((float)color_width, *(bbox_ptr + 4 * i + 3)));
+      int y_min = (int)std::round(std::max((float)0, *(bbox_ptr + 4 * i)));
+      int x_min = (int)std::round(std::max((float)0, *(bbox_ptr + 4 * i + 1)));
+      int y_max = (int)std::round(std::min((float)color_height, *(bbox_ptr + 4 * i + 2)));
+      int x_max = (int)std::round(std::min((float)color_width, *(bbox_ptr + 4 * i + 3)));
       bboxes[i].bbox = cv::Rect(
         x_min, y_min, x_max - x_min + 1, y_max - y_min + 1);
       bboxes[i].bboxHires = cv::Rect(
@@ -97,6 +99,9 @@ public:
         2 * (x_max - x_min + 1), 2 * (y_max - y_min + 1));
       bboxes[i].label = *(label_ptr + i);
       bboxes[i].score = *(score_ptr + i);
+      outInfo("label " << i << "th: " << bboxes[i].label);
+      outInfo("score " << i << "th: " << bboxes[i].score);
+      outInfo("bbox " << i << "th: (" << y_min << ", " << x_min << ", " << y_max << ", " << x_max << ")");
     }
 
     return UIMA_ERR_NONE;
