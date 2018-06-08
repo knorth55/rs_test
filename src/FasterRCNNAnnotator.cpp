@@ -45,9 +45,7 @@ public:
     Py_Initialize();
     np::initialize();
     python::object rs_test_module = python::import("rs_test");
-    predictor = rs_test_module.attr("FasterRCNNVGG16Predictor");
-    python::object predictor_init_func = predictor.attr("__init__");
-    predictor_init_func(-1);
+    predictor = rs_test_module.attr("FasterRCNNPredictor")("voc07", -1);
     return UIMA_ERR_NONE;
   }
 
@@ -67,7 +65,6 @@ public:
     int color_height = color_size.height;
     int color_width = color_size.width;
 
-    python::object predict_func = predictor.attr("predict");
     python::tuple shape = python::make_tuple(color_height, color_width, 3);
     np::ndarray img = np::zeros(shape, np::dtype::get_builtin<uint>());
     uint* img_ptr = reinterpret_cast<uint *>(img.get_data());
@@ -75,7 +72,9 @@ public:
     {
       *(img_ptr + i) = color.data[i];
     }
-    python::tuple return_tuple = python::extract<python::tuple>(predict_func(img));
+
+    python::tuple return_tuple = python::extract<python::tuple>(
+      predictor.attr("predict")(img));
     np::ndarray bbox = python::extract<np::ndarray>(return_tuple[0]);
     np::ndarray label = python::extract<np::ndarray>(return_tuple[1]);
     np::ndarray score = python::extract<np::ndarray>(return_tuple[2]);
