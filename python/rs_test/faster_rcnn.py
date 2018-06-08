@@ -3,7 +3,7 @@ from chainercv.datasets import voc_bbox_label_names
 from chainercv.links import FasterRCNNVGG16
 
 
-class FasterRCNNVGG16Predictor(object):
+class FasterRCNNPredictor(object):
 
     def __init__(self, pretrained_model='voc07', gpu=-1):
         self.model = FasterRCNNVGG16(
