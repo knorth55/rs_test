@@ -13,6 +13,7 @@
 #include <rs/types/all_types.h>
 //RS
 #include <rs/scene_cas.h>
+#include <rs/DrawingAnnotator.h>
 #include <rs/utils/common.h>
 #include <rs/utils/time.h>
 
@@ -23,13 +24,13 @@ namespace np = boost::numpy;
 using namespace uima;
 
 
-class FasterRCNNAnnotator : public Annotator
+class FasterRCNNAnnotator : public DrawingAnnotator
 {
 private:
   struct ObjectBoundingBox
   {
     int label;
-    cv::Rect bbox, bboxHires;
+    cv::Rect bbox;
     float score;
   };
 
@@ -38,6 +39,8 @@ private:
   python::object predictor;
 
 public:
+
+  FasterRCNNAnnotator(): DrawingAnnotator(__func__) {}
 
   TyErrorId initialize(AnnotatorContext &ctx)
   {
@@ -55,7 +58,8 @@ public:
     return UIMA_ERR_NONE;
   }
 
-  TyErrorId process(CAS &tcas, ResultSpecification const &res_spec)
+private:
+  TyErrorId processWithLock(CAS &tcas, ResultSpecification const &res_spec)
   {
     outInfo("process start");
     rs::StopWatch clock;
@@ -87,16 +91,13 @@ public:
     int *label_ptr = reinterpret_cast<int *>(label.get_data());
     float *score_ptr = reinterpret_cast<float *>(score.get_data());
 
-    for (size_t i=0; i < n_rois; i++) {
+    for (size_t i = 0; i < n_rois; i++) {
       int y_min = (int)std::round(std::max((float)0, *(bbox_ptr + 4 * i)));
       int x_min = (int)std::round(std::max((float)0, *(bbox_ptr + 4 * i + 1)));
       int y_max = (int)std::round(std::min((float)color_height, *(bbox_ptr + 4 * i + 2)));
       int x_max = (int)std::round(std::min((float)color_width, *(bbox_ptr + 4 * i + 3)));
       bboxes[i].bbox = cv::Rect(
         x_min, y_min, x_max - x_min + 1, y_max - y_min + 1);
-      bboxes[i].bboxHires = cv::Rect(
-        2 * x_min, 2 * y_min,
-        2 * (x_max - x_min + 1), 2 * (y_max - y_min + 1));
       bboxes[i].label = *(label_ptr + i);
       bboxes[i].score = *(score_ptr + i);
       outInfo("label " << i << "th: " << bboxes[i].label);
@@ -107,12 +108,13 @@ public:
     return UIMA_ERR_NONE;
   }
 
-  void drawImage(cv::Mat &disp)
+  void drawImageWithLock(cv::Mat &disp)
   {
     disp = color.clone();
-    for(size_t i = 0; i < bboxes.size(); ++i)
+    outInfo("bboxes size: " << bboxes.size());
+    for(size_t i = 0; i < bboxes.size(); i++)
     {
-      cv::rectangle(disp, bboxes[i].bboxHires, rs::common::cvScalarColors[i % rs::common::numberOfColors]);
+      cv::rectangle(disp, bboxes[i].bbox, rs::common::cvScalarColors[i % rs::common::numberOfColors]);
     }
   }
 };
