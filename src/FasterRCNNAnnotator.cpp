@@ -111,10 +111,19 @@ private:
   void drawImageWithLock(cv::Mat &disp)
   {
     disp = color.clone();
-    outInfo("bboxes size: " << bboxes.size());
+    python::tuple label_names = python::extract<python::tuple>(predictor.attr("label_names"));
     for(size_t i = 0; i < bboxes.size(); i++)
     {
-      cv::rectangle(disp, bboxes[i].bbox, rs::common::cvScalarColors[i % rs::common::numberOfColors]);
+      int label = bboxes[i].label;
+      float score = bboxes[i].score;
+      std::string label_name = python::extract<std::string>(label_names[label]);
+      std::ostringstream ss;
+      ss << "label: " << label_name << ", score: " << score;
+      std::string bbox_text = ss.str();
+      cv::Rect bbox = bboxes[i].bbox;
+      cv::Scalar color = rs::common::cvScalarColors[i % rs::common::numberOfColors];
+      cv::putText(disp, bbox_text, cv::Point(bbox.x, bbox.y), 0, 0.5, color);
+      cv::rectangle(disp, bbox, color);
     }
   }
 };

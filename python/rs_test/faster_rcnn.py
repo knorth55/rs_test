@@ -6,8 +6,9 @@ from chainercv.links import FasterRCNNVGG16
 class FasterRCNNPredictor(object):
 
     def __init__(self, pretrained_model='voc07', gpu=-1):
+        self.label_names = voc_bbox_label_names
         self.model = FasterRCNNVGG16(
-            n_fg_class=len(voc_bbox_label_names),
+            n_fg_class=len(self.label_names),
             pretrained_model=pretrained_model)
         self.gpu = gpu
         if self.gpu >= 0:
