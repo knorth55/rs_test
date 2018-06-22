@@ -41,6 +41,8 @@ rs_add_library(rs_pythonTestAnnotator src/PythonTestAnnotator.cpp)
 target_link_libraries(rs_pythonTestAnnotator ${CATKIN_LIBRARIES} boost_numpy)
 rs_add_library(rs_fasterRCNNAnnotator src/FasterRCNNAnnotator.cpp)
 target_link_libraries(rs_fasterRCNNAnnotator ${CATKIN_LIBRARIES} ${OpenCV_LIBRARIES} boost_numpy)
+rs_add_library(rs_ssdAnnotator src/SSDAnnotator.cpp)
+target_link_libraries(rs_ssdAnnotator ${CATKIN_LIBRARIES} ${OpenCV_LIBRARIES} boost_numpy)
 ################################################################################
 ## Build                                                                      ##
 ################################################################################

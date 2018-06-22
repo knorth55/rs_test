@@ -175,7 +175,7 @@
       <fixedFlow>
        <node>CollectionReader</node>
        <node>ImagePreprocessor</node>
-       <node>FasterRCNNAnnotator</node>
+       <node>SSDAnnotator</node>
        <node>PointCloudFilter</node>
        <node>NormalEstimator</node>
        <node>PlaneAnnotator</node>

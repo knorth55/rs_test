@@ -118,6 +118,9 @@
     <delegateAnalysisEngine key="RotationalSymmetrySegmentation">
       <import location="../../../robosherlock/descriptors/annotators/segmentation/RotationalSymmetrySegmentation.xml"/>
     </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="SSDAnnotator">
+      <import location="../annotators/SSDAnnotator.xml"/>
+    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="SacModelAnnotator">
       <import location="../../../robosherlock/descriptors/annotators/annotation/SacModelAnnotator.xml"/>
     </delegateAnalysisEngine>
