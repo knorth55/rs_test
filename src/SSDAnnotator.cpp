@@ -49,7 +49,7 @@ public:
     Py_Initialize();
     np::initialize();
     python::object rs_test_module = python::import("rs_test");
-    predictor = rs_test_module.attr("SSDPredictor")("ssd300", "voc0712", -1);
+    predictor = rs_test_module.attr("SSDPredictor")("ssd300", "voc0712", -1, 0.3);
     label_names = python::extract<python::tuple>(predictor.attr("label_names"));
     return UIMA_ERR_NONE;
   }

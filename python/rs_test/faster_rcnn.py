@@ -5,11 +5,15 @@ from chainercv.links import FasterRCNNVGG16
 
 class FasterRCNNPredictor(object):
 
-    def __init__(self, pretrained_model='voc07', gpu=-1):
+    def __init__(
+            self, pretrained_model='voc07',
+            gpu=-1, score_thresh=0.3
+    ):
         self.label_names = voc_bbox_label_names
         self.model = FasterRCNNVGG16(
             n_fg_class=len(self.label_names),
             pretrained_model=pretrained_model)
+        self.model.score_thresh = score_thresh
         self.gpu = gpu
         if self.gpu >= 0:
             cuda.get_device_from_id(self.gpu).use()

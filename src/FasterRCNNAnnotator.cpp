@@ -48,7 +48,7 @@ public:
     Py_Initialize();
     np::initialize();
     python::object rs_test_module = python::import("rs_test");
-    predictor = rs_test_module.attr("FasterRCNNPredictor")("voc07", -1);
+    predictor = rs_test_module.attr("FasterRCNNPredictor")("voc07", -1, 0.3);
     return UIMA_ERR_NONE;
   }
 
