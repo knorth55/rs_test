@@ -37,6 +37,7 @@ private:
   std::vector<ObjectBoundingBox> bboxes;
   cv::Mat color;
   python::object predictor;
+  python::tuple label_names;
 
 public:
 
@@ -49,6 +50,7 @@ public:
     np::initialize();
     python::object rs_test_module = python::import("rs_test");
     predictor = rs_test_module.attr("SSDPredictor")("ssd300", "voc0712", -1);
+    label_names = python::extract<python::tuple>(predictor.attr("label_names"));
     return UIMA_ERR_NONE;
   }
 
@@ -100,7 +102,8 @@ private:
         x_min, y_min, x_max - x_min + 1, y_max - y_min + 1);
       bboxes[i].label = *(label_ptr + i);
       bboxes[i].score = *(score_ptr + i);
-      outInfo("label " << i << "th: " << bboxes[i].label);
+      std::string label_name = python::extract<std::string>(label_names[bboxes[i].label]);
+      outInfo("label " << i << "th: " << label_name);
       outInfo("score " << i << "th: " << bboxes[i].score);
       outInfo("bbox " << i << "th: (" << y_min << ", " << x_min << ", " << y_max << ", " << x_max << ")");
     }
@@ -111,7 +114,6 @@ private:
   void drawImageWithLock(cv::Mat &disp)
   {
     disp = color.clone();
-    python::tuple label_names = python::extract<python::tuple>(predictor.attr("label_names"));
     for(size_t i = 0; i < bboxes.size(); i++)
     {
       int label = bboxes[i].label;
