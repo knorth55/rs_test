@@ -109,9 +109,6 @@
     <delegateAnalysisEngine key="RegionFilter">
       <import location="../../../robosherlock/descriptors/annotators/filter/RegionFilter.xml"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="ResultAdvertiser">
-      <import location="../../../robosherlock/descriptors/annotators/io/ResultAdvertiser.xml"/>
-    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="RotationalSymmetryAnnotator">
       <import location="../../../robosherlock/descriptors/annotators/segmentation/RotationalSymmetryAnnotator.xml"/>
     </delegateAnalysisEngine>
@@ -182,7 +179,6 @@
        <node>ImageSegmentationAnnotator</node>
        <node>PointCloudClusterExtractor</node>
        <node>ClusterMerger</node>
-       <node>ResultAdvertiser</node>
       </fixedFlow>
     </flowConstraints>
     <typePriorities/>
