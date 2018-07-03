@@ -30,7 +30,7 @@ private:
   struct ObjectBoundingBox
   {
     int label;
-    cv::Rect bbox;
+    cv::Rect bbox, bbox_hire;
     float score;
   };
 
@@ -66,6 +66,8 @@ private:
     outInfo("process start");
     rs::StopWatch clock;
     rs::SceneCas cas(tcas);
+    rs::Scene scene = cas.getScene();
+
     cas.get(VIEW_COLOR_IMAGE_HD, color);
     cv::Size color_size = color.size();
     int color_height = color_size.height;
@@ -100,12 +102,29 @@ private:
       int x_max = (int)std::round(std::min((float)color_width, *(bbox_ptr + 4 * i + 3)));
       bboxes[i].bbox = cv::Rect(
         x_min, y_min, x_max - x_min + 1, y_max - y_min + 1);
+      bboxes[i].bbox_hire = cv::Rect(
+        x_min / 2, y_min / 2, (x_max - x_min + 1) / 2, (y_max - y_min + 1) / 2);
       bboxes[i].label = *(label_ptr + i);
       bboxes[i].score = *(score_ptr + i);
       std::string label_name = python::extract<std::string>(label_names[bboxes[i].label]);
       outInfo("label " << i << "th: " << label_name);
       outInfo("score " << i << "th: " << bboxes[i].score);
-      outInfo("bbox " << i << "th: (" << y_min << ", " << x_min << ", " << y_max << ", " << x_max << ")");
+      outInfo("bbox " << i << "th: ("
+          << y_min << ", " << x_min << ", " << y_max << ", " << x_max << ")");
+
+      // annotate
+      rs::ImageROI roi = rs::create<rs::ImageROI>(tcas);
+      roi.roi(rs::conversion::to(tcas, bboxes[i].bbox));
+      roi.roi_hires(rs::conversion::to(tcas, bboxes[i].bbox_hire));
+      rs::Cluster cluster = rs::create<rs::Cluster>(tcas);
+      cluster.rois(roi);
+      rs::Classification classification = rs::create<rs::Classification>(tcas);
+      classification.classification_type.set("CLASS");
+      classification.classname.set(label_name);
+      classification.classifier.set("SSD");
+      classification.source.set("SSDAnnotator");
+      cluster.annotations.append(classification);
+      scene.identifiables.append(cluster);
     }
 
     return UIMA_ERR_NONE;
