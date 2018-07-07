@@ -4,7 +4,6 @@ from chainer.backends import cuda
 from chainercv.datasets import sbd_instance_segmentation_label_names
 from chainercv.experimental.links import FCISResNet101
 from chainercv.utils import mask_to_bbox
-from chainercv.visualizations import vis_instance_segmentation
 import warnings
 
 
@@ -38,11 +37,6 @@ class FCISPredictor(object):
         imgs = img[None]
         masks, labels, scores = self.model.predict(imgs)
         mask, label, score = masks[0], labels[0], scores[0]
-        import matplotlib.pyplot as plt
-        vis_instance_segmentation(
-            img, mask, label, score,
-            label_names=self.label_names)
-        plt.savefig('/home/shingo/Desktop/fcis.png')
         bbox = mask_to_bbox(mask)
         bbox = np.round(bbox).astype(np.int32)
         mask = (mask * 255).astype(np.uint8)
