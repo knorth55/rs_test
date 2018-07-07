@@ -2,6 +2,8 @@
 
 - boost::python
 - boost::numpy
+- chainer
+- chainercv
 
 ## Installation
 
@@ -42,3 +44,26 @@ roslaunch robosherlock rs.launch ae:=python_test
 rosbag play test.bag --loop --clock
 ```
 
+- Run Faster-RCNN demo
+
+```bash
+roscore
+roslaunch robosherlock rs.launch ae:=faster_test
+rosbag play test.bag --loop --clock
+```
+
+- Run SSD demo
+
+```bash
+roscore
+roslaunch robosherlock rs.launch ae:=ssd_test
+rosbag play test.bag --loop --clock
+```
+
+- Run FCIS demo
+
+```bash
+roscore
+roslaunch robosherlock rs.launch ae:=fcis_test
+rosbag play test.bag --loop --clock
+```
