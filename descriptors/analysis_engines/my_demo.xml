@@ -46,6 +46,9 @@
     <delegateAnalysisEngine key="ExampleGSOCAnnotator">
       <import location="../annotators/ExampleGSOCAnnotator.xml"/>
     </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="FCISAnnotator">
+      <import location="../annotators/FCISAnnotator.xml"/>
+    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="FasterRCNNAnnotator">
       <import location="../annotators/FasterRCNNAnnotator.xml"/>
     </delegateAnalysisEngine>
