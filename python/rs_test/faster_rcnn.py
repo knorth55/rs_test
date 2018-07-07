@@ -1,3 +1,5 @@
+import numpy as np
+
 from chainer.backends import cuda
 from chainercv.datasets import voc_bbox_label_names
 from chainercv.links import FasterRCNNVGG16
@@ -22,8 +24,7 @@ class FasterRCNNPredictor(object):
     def predict(self, img):
         img = img[:, :, ::-1].transpose((2, 0, 1))
         imgs = img[None]
-        if self.gpu >= 0:
-            imgs = cuda.to_gpu(imgs)
         bboxes, labels, scores = self.model.predict(imgs)
         bbox, label, score = bboxes[0], labels[0], scores[0]
+        bbox = np.round(bbox).astype(np.int32)
         return bbox, label, score
