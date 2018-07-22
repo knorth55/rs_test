@@ -2,9 +2,9 @@
 <taeDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.cpp</frameworkImplementation>
   <primitive>true</primitive>
-  <annotatorImplementationName>rs_fcisAnnotator</annotatorImplementationName>
+  <annotatorImplementationName>rs_maskRCNNAnnotator</annotatorImplementationName>
   <analysisEngineMetaData>
-    <name>FCISAnnotator</name>
+    <name>MaskRCNNAnnotator</name>
     <description/>
     <version>1.0</version>
     <vendor/>
@@ -44,14 +44,14 @@
         <nameValuePair>
             <name>structure</name>
             <value>
-                <string>fcis_resnet101</string>
+                <string>mask_rcnn_resnet50</string>
             </value>
         </nameValuePair>
 
         <nameValuePair>
             <name>pretrained_model</name>
             <value>
-                <string>sbd</string>
+                <string>coco</string>
             </value>
         </nameValuePair>
 

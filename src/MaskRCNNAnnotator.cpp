@@ -22,7 +22,7 @@ namespace np = boost::numpy;
 using namespace uima;
 
 
-class FCISAnnotator : public DrawingAnnotator
+class MaskRCNNAnnotator : public DrawingAnnotator
 {
 private:
   struct ObjectMask
@@ -45,7 +45,7 @@ private:
 
 public:
 
-  FCISAnnotator(): DrawingAnnotator(__func__) {}
+  MaskRCNNAnnotator(): DrawingAnnotator(__func__) {}
 
   TyErrorId initialize(AnnotatorContext &ctx)
   {
@@ -58,7 +58,7 @@ public:
     Py_Initialize();
     np::initialize();
     python::object rs_test_module = python::import("rs_test");
-    predictor = rs_test_module.attr("FCISPredictor")
+    predictor = rs_test_module.attr("MaskRCNNPredictor")
         (structure.c_str(), pretrained_model.c_str(), gpu, score_thresh);
     label_names = python::extract<python::tuple>(predictor.attr("label_names"));
     return UIMA_ERR_NONE;
@@ -91,10 +91,10 @@ private:
       *(img_ptr + i) = color.data[i];
     }
 
-    outInfo("FCIS prediction start");
+    outInfo("MaskRCNN prediction start");
     python::tuple return_tuple = python::extract<python::tuple>(
       predictor.attr("predict")(img));
-    outInfo("FCIS prediction finish");
+    outInfo("MaskRCNN prediction finish");
 
     python::list mask_list = python::extract<python::list>(return_tuple[0]);
     np::ndarray bbox = python::extract<np::ndarray>(return_tuple[1]);
@@ -155,8 +155,8 @@ private:
       rs::Classification classification = rs::create<rs::Classification>(tcas);
       classification.classification_type.set("CLASS");
       classification.classname.set(label_name);
-      classification.classifier.set("FCIS");
-      classification.source.set("FCISAnnotator");
+      classification.classifier.set("MaskRCNN");
+      classification.source.set("MaskRCNNAnnotator");
       cluster.annotations.append(classification);
       scene.identifiables.append(cluster);
     }
@@ -197,4 +197,4 @@ private:
 };
 
 // This macro exports an entry point that is used to create the annotator.
-MAKE_AE(FCISAnnotator)
+MAKE_AE(MaskRCNNAnnotator)

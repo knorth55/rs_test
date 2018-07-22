@@ -18,7 +18,8 @@ def mask_to_roi_mask(mask, bbox):
 class FCISPredictor(object):
 
     def __init__(
-            self, model='fcis_resnet101', pretrained_model='sbd', gpu=-1):
+            self, model='fcis_resnet101', pretrained_model='sbd',
+            gpu=-1, score_thresh=0.3):
         self.label_names = sbd_instance_segmentation_label_names
         if model == 'fcis_resnet101':
             model_class = FCISResNet101
@@ -27,6 +28,7 @@ class FCISPredictor(object):
         self.model = model_class(
             n_fg_class=len(self.label_names),
             pretrained_model=pretrained_model)
+        self.model.score_thresh = score_thresh
         self.gpu = gpu
         if self.gpu >= 0:
             cuda.get_device_from_id(self.gpu).use()
