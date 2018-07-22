@@ -1,10 +1,10 @@
 import numpy as np
+import warnings
 
 from chainer.backends import cuda
 from chainercv.datasets import sbd_instance_segmentation_label_names
 from chainercv.experimental.links import FCISResNet101
 from chainercv.utils import mask_to_bbox
-import warnings
 
 
 def mask_to_roi_mask(mask, bbox):

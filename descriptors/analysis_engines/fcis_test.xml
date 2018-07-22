@@ -174,14 +174,7 @@
     <flowConstraints>
       <fixedFlow>
        <node>CollectionReader</node>
-       <node>ImagePreprocessor</node>
        <node>FCISAnnotator</node>
-       <node>PointCloudFilter</node>
-       <node>NormalEstimator</node>
-       <node>PlaneAnnotator</node>
-       <node>ImageSegmentationAnnotator</node>
-       <node>PointCloudClusterExtractor</node>
-       <node>ClusterMerger</node>
       </fixedFlow>
     </flowConstraints>
     <typePriorities/>

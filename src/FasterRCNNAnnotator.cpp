@@ -36,6 +36,11 @@ private:
 
   std::vector<ObjectBoundingBox> bboxes;
   cv::Mat color;
+
+  std::string structure;
+  std::string pretrained_model;
+  int gpu;
+  float score_thresh;
   python::object predictor;
   python::tuple label_names;
 
@@ -46,10 +51,16 @@ public:
   TyErrorId initialize(AnnotatorContext &ctx)
   {
     outInfo("initialize");
+    ctx.extractValue("structure", structure);
+    ctx.extractValue("pretrained_model", pretrained_model);
+    ctx.extractValue("gpu", gpu);
+    ctx.extractValue("score_thresh", score_thresh);
+
     Py_Initialize();
     np::initialize();
     python::object rs_test_module = python::import("rs_test");
-    predictor = rs_test_module.attr("FasterRCNNPredictor")("voc07", -1, 0.3);
+    predictor = rs_test_module.attr("FasterRCNNPredictor")
+        (structure.c_str(), pretrained_model.c_str(), gpu, score_thresh);
     label_names = python::extract<python::tuple>(predictor.attr("label_names"));
     return UIMA_ERR_NONE;
   }

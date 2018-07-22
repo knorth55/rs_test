@@ -1,10 +1,10 @@
 import numpy as np
+import warnings
 
 from chainer.backends import cuda
 from chainercv.datasets import voc_bbox_label_names
 from chainercv.links import SSD300
 from chainercv.links import SSD512
-import warnings
 
 
 class SSDPredictor(object):

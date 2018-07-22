@@ -9,20 +9,66 @@
     <version>1.0</version>
     <vendor/>
     <configurationParameters>
+
         <configurationParameter>
-            <name>test_param</name>
+            <name>structure</name>
+            <type>String</type>
+            <multiValued>false</multiValued>
+            <mandatory>false</mandatory>
+        </configurationParameter>
+
+        <configurationParameter>
+            <name>pretrained_model</name>
+            <type>String</type>
+            <multiValued>false</multiValued>
+            <mandatory>false</mandatory>
+        </configurationParameter>
+
+        <configurationParameter>
+            <name>gpu</name>
+            <type>Integer</type>
+            <multiValued>false</multiValued>
+            <mandatory>false</mandatory>
+        </configurationParameter>
+
+        <configurationParameter>
+            <name>score_thresh</name>
             <type>Float</type>
             <multiValued>false</multiValued>
             <mandatory>false</mandatory>
         </configurationParameter>
+
     </configurationParameters>
     <configurationParameterSettings>
+
         <nameValuePair>
-            <name>test_param</name>
+            <name>structure</name>
             <value>
-                <float>0.01</float>
+                <string>ssd300</string>
             </value>
         </nameValuePair>
+
+        <nameValuePair>
+            <name>pretrained_model</name>
+            <value>
+                <string>voc0712</string>
+            </value>
+        </nameValuePair>
+
+        <nameValuePair>
+            <name>gpu</name>
+            <value>
+                <integer>-1</integer>
+            </value>
+        </nameValuePair>
+
+        <nameValuePair>
+            <name>score_thresh</name>
+            <value>
+                <float>0.3</float>
+            </value>
+        </nameValuePair>
+
     </configurationParameterSettings>
     <typeSystemDescription>
         <imports>

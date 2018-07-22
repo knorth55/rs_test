@@ -35,6 +35,10 @@ private:
 
   std::vector<ObjectMask> masks;
   cv::Mat color;
+
+  std::string structure;
+  std::string pretrained_model;
+  int gpu;
   python::object predictor;
   python::tuple label_names;
 
@@ -45,10 +49,15 @@ public:
   TyErrorId initialize(AnnotatorContext &ctx)
   {
     outInfo("initialize");
+    ctx.extractValue("structure", structure);
+    ctx.extractValue("pretrained_model", pretrained_model);
+    ctx.extractValue("gpu", gpu);
+
     Py_Initialize();
     np::initialize();
     python::object rs_test_module = python::import("rs_test");
-    predictor = rs_test_module.attr("FCISPredictor")("fcis_resnet101", "sbd", 0);
+    predictor = rs_test_module.attr("FCISPredictor")
+        (structure.c_str(), pretrained_model.c_str(), gpu);
     label_names = python::extract<python::tuple>(predictor.attr("label_names"));
     return UIMA_ERR_NONE;
   }
